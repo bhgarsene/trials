@@ -9,7 +9,6 @@ var path = require('path');
 const guestRoute = require('./routes/guests')
 const voucherRoute = require('./routes/voucher')
 const usersRoute = require('./routes/users')
-const home = require("./routes/home");
 app.use(cors())
 
 dotenv.config();
@@ -20,8 +19,12 @@ mongoose.connect(process.env.DB_CONNECT)
     .then(() => console.log("connected to DB."))
     .catch(err => console.log(err));
 
+
+app.set('view engine', 'ejs');
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(express.static(path.resolve(__dirname, 'public')));
 
 app.use(express.json());
 
@@ -33,6 +36,6 @@ app.get('/', function (req, res) {
     res.json({ status: "success", message: "guests list found!!!", data: "all" });
 });
 
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => console.log(`up running server ${PORT}`));
